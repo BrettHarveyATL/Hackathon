@@ -7,15 +7,18 @@
         <table class="table table-striped">
             <tr>
                 <th>Drink Name</th>
-                <th>Creator</th>
-                <th>Tastieness</th>
-                <th>Calories</th>
+                <th>Liquor</th>
+                <th>Ingredients</th>
+                <th>Like??</th>
 
             </tr>
             @foreach (Drink drink in ViewBag.AllDrinks)
             {
                 <tr>
                     <td>@drink.Name</td>
+                    <td>@drink.Liquor</td>
+                    <td>@drink.IngredientOne @drink.IngredientTwo @drink.IngredientThree @drink.IngredientFour</td>
+                    <td>Under Maintenance</td>
                 </tr>
             }
         </table>

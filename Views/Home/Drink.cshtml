@@ -1,0 +1,44 @@
+@model Drink
+<div class="text-center" style="width: 600px">
+    <h1 class="display-4">Add A Drink</h1>
+    <form method="post" asp-controller="Home" asp-action="NewDrink">
+        <input type="hidden" asp-for="UserId" value="@ViewBag.SessionId"/>
+        <div class='form-group'>
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="alert-danger"></span>
+        </div>
+        <div class='form-group'>
+            <label asp-for="Liquor"></label>
+            <input asp-for="Liquor" class="form-control" />
+            <span asp-validation-for="Liquor" class="alert-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="IngredientOne"></label>
+            <input class="form-control" asp-for="IngredientOne" />
+        </div>
+        <div class="form-group">
+            <label asp-for="IngredientTwo"></label>
+            <input class="form-control" asp-for="IngredientTwo" />
+        </div>
+        <div class="form-group">
+            <label asp-for="IngredientThree"></label>
+            <input class="form-control" asp-for="IngredientThree" />
+        </div>
+        <div class="form-group">
+            <label asp-for="IngredientFour"></label>
+            <input class="form-control" asp-for="IngredientFour" />
+        </div>
+        <div class="form-group">
+            <label asp-for="IngredientFive"></label>
+            <input class="form-control" asp-for="IngredientFive" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Ice"></label>
+            <input class="form-control" asp-for="Ice" />
+            <span asp-validation-for="Ice" class="alert-danger"></span>
+        </div>
+        <input type="submit" class="btn btn-info" value="Add Drink" />
+    </form>
+</div>

@@ -62,7 +62,7 @@ namespace SummerDrinks.Controllers
                 return View();
             }
         }
-        
+
         [HttpGet("loginPage")]
         public IActionResult LoginPage()
         {
@@ -72,17 +72,17 @@ namespace SummerDrinks.Controllers
         public IActionResult Login(LoginUser LogUser)
         {
             Console.WriteLine("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var dbUser = _context.Users.FirstOrDefault(user => user.Email == LogUser.Email);
-                if(dbUser == null)
+                if (dbUser == null)
                 {
                     ModelState.AddModelError("Email", "Invalid login");
                     return View("LoginPage");
                 }
                 var hasher = new PasswordHasher<LoginUser>();
                 var result = hasher.VerifyHashedPassword(LogUser, dbUser.Password, LogUser.Password);
-                if(result == 0)
+                if (result == 0)
                 {
                     ModelState.AddModelError("Email", "Invalid login");
                     return View("LoginPage");
@@ -130,5 +130,32 @@ namespace SummerDrinks.Controllers
             }
             return View();
         }
+        //*********************************Drink Form Control***********************
+        [HttpGet("drink")]
+        public IActionResult Drink()
+        {
+            ViewBag.SessionId = HttpContext.Session.GetInt32("UserId");
+            return View("Drink");
+        }
+        [HttpPost("drink/new")]
+        public IActionResult NewDrink(Drink newDrink)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(newDrink);
+                _context.SaveChanges();
+                return Redirect($"/account/{newDrink.UserId}");
+            }
+            return View("Drink");
+        }
+        [HttpGet("delete/{drinkId}")]
+        public IActionResult DeleteDrink(int drinkId)
+        {
+            Drink deleteDrink = _context.Drinks.FirstOrDefault(drink => drink.DrinkId == drinkId);
+            _context.Drinks.Remove(deleteDrink);
+            _context.SaveChanges();
+            return Redirect($"/account/{deleteDrink.UserId}");
+        }
+        //*********************************End Drink Form Control***********************
     }
 }

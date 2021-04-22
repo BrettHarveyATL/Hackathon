@@ -16,7 +16,7 @@
             <a class="btn btn-primary" href="/logout">Logout</a>
         </div>
         <h4 class="display-2">Welcome, @ViewBag.SessionName</h4>
-        <h5 class="display-5"> <a href="#">add drink</a> &nbsp; | &nbsp; <a href="#">favorite drinks</a></h5>
+        <h5 class="display-5"> <a href="/drink">Add a drink</a> &nbsp; | &nbsp; <a href="/drinks">All drinks</a></h5>
         <div id="form">
                             <table class="table table-success">
                     <tr>
@@ -31,7 +31,7 @@
                             <td>@l.Name</td>
                             <td>@l.Liquor</td>
                             <td>@l.Ice</td>
-                            <td><a href="/delete" class="btn btn-sm btn-danger">Delete</a></td>
+                            <td><a href="/delete/@l.DrinkId" class="btn btn-sm btn-danger">Delete</a></td>
                         </tr>
                     }
                 </table>

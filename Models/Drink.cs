@@ -9,6 +9,8 @@ namespace SummerDrinks.Models
         [Key]
         public int DrinkId {get; set;}
         [Required]
+        public string Name {get; set;}
+        [Required]
         public string Liquor {get; set;}
         public string IngredientOne {get; set;}
         public string IngredientTwo {get; set;}

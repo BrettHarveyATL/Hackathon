@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Coiny&family=Dela+Gothic+One&family=Hachi+Maru+Pop&family=Kalam:wght@700&family=Kumar+One&family=Londrina+Solid:wght@100&family=Luckiest+Guy&family=Marck+Script&family=Permanent+Marker&family=Sigmar+One&family=Squada+One&family=Yellowtail&display=swap" rel="stylesheet">
+    <title>Summer Drinks - Account Page</title>
+    <link rel="stylesheet" href="~/css/looks.css">
+</head>
+<body class="container">
+    <div id="main">
+        <div id="home">
+            <a class="btn btn-primary" href="/logout">Logout</a>
+        </div>
+        <h4 class="display-2">Welcome, @ViewBag.SessionName</h4>
+        <h5 class="display-5"> <a href="#">add drink</a> &nbsp; | &nbsp; <a href="#">favorite drinks</a></h5>
+        <div id="form">
+                            <table class="table table-success">
+                    <tr>
+                        <th>Drink</th>
+                        <th>Liquor</th>
+                        <th>With Ice?</th>
+                        <th>Delete Drink?</th>
+                    </tr>
+                    @foreach(var l in ViewBag.User.CreatedDrinks)
+                    {
+                        <tr>
+                            <td>@l.Name</td>
+                            <td>@l.Liquor</td>
+                            <td>@l.Ice</td>
+                            <td><a href="/delete" class="btn btn-sm btn-danger">Delete</a></td>
+                        </tr>
+                    }
+                </table>
+        </div>
+    </div>
+</body>
+</html>

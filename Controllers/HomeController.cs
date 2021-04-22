@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using SummerDrinks.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace SummerDrinks.Controllers
@@ -19,11 +20,8 @@ namespace SummerDrinks.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
-        {
-            return RedirectToAction("RegisterForm");
-        }
-        [HttpGet("register")]
+
+        [HttpGet("")]
         public IActionResult RegisterForm()
         {
             return View();
@@ -38,22 +36,33 @@ namespace SummerDrinks.Controllers
                 _context.Add(newUser);
                 _context.SaveChanges();
                 HttpContext.Session.SetInt32("UserId", newUser.UserId);
-                return RedirectToAction("Success");
+                int? UserId = HttpContext.Session.GetInt32("UserId");
+                HttpContext.Session.SetString("UserName", newUser.FirstName);
+                return Redirect($"account/{(int)UserId}");
             }
             return View("RegisterForm");
         }
-        [HttpGet("success")]
-        public IActionResult Success()
+        //*********************************User Page *******************************************************
+        [HttpGet("account/{UserId}")]
+        public IActionResult AccountPage(int UserId)
         {
-            int? loggedId = HttpContext.Session.GetInt32("UserId");
-            if(loggedId ==null)
+            Console.WriteLine("**********I am inside the AccountPage function**********");
+            ViewBag.SessionName = HttpContext.Session.GetString("UserName");
+            ViewBag.SessionId = HttpContext.Session.GetInt32("UserId");
+            int? UseId = HttpContext.Session.GetInt32("UserId");
+            if (UseId == null)
             {
-                return RedirectToAction("RegisterForm");
+                return RedirectToAction("LoginPage");
             }
-            User LoggedUser = _context.Users.FirstOrDefault(user => user.UserId == (int)loggedId);
-            ViewBag.loggedUser = LoggedUser;
-            return View();
+            else
+            {
+                ViewBag.User = _context.Users
+                    .Include(c => c.CreatedDrinks)
+                    .FirstOrDefault(u => u.UserId == UserId);
+                return View();
+            }
         }
+        
         [HttpGet("loginPage")]
         public IActionResult LoginPage()
         {
@@ -79,15 +88,47 @@ namespace SummerDrinks.Controllers
                     return View("LoginPage");
                 }
                 HttpContext.Session.SetInt32("UserId", dbUser.UserId);
-                return RedirectToAction("Success");
+                int? UserId = HttpContext.Session.GetInt32("UserId");
+                HttpContext.Session.SetString("UserName", dbUser.FirstName);
+                return Redirect($"account/{(int)UserId}");
             }
             return View("LoginPage");
         }
+
+
         [HttpGet("logout")]
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
             return RedirectToAction("LoginPage");
+        }
+        //**************************************************Add Drink Stuff below here ********************************************************
+
+        [HttpGet("drinks")]
+        public IActionResult AllDrinks()
+        {
+            ViewBag.SessionName = HttpContext.Session.GetString("UserName");
+            ViewBag.SessionId = HttpContext.Session.GetInt32("UserId");
+            int? UseId = HttpContext.Session.GetInt32("UserId");
+            if (UseId == null)
+            {
+                return RedirectToAction("LoginPage");
+            }
+            ViewBag.AllDrinks = _context.Drinks.ToList();
+            return View();
+        }
+        //***********************come back and add ID when displaying single drink page.
+        [HttpGet("drinks/id")]
+        public IActionResult SingleDrink()
+        {
+            ViewBag.SessionName = HttpContext.Session.GetString("UserName");
+            ViewBag.SessionId = HttpContext.Session.GetInt32("UserId");
+            int? UseId = HttpContext.Session.GetInt32("UserId");
+            if (UseId == null)
+            {
+                return RedirectToAction("LoginPage");
+            }
+            return View();
         }
     }
 }
